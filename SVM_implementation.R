@@ -75,14 +75,17 @@ classes <- c(-1, 1)
 
 # step 2: transform vectors (same dimensions but transformed)
 # transformation functions can be anything
-# transformation is important to map to higher dimensions if needed
+# that said, stick with functions that can exploit "kernel tricks"
+# kernel tricks allow you to calculate similarities in higher dimensional space
+# without incurring the computational costs to get there!
 
-# here is a made up transformation function
+# the following is a made up transformation function
+# no kernel trick is used
 transform <- function(input){
   if (sqrt(input[1]^2 + input[2]^2) <= 2){
     output <- input
   }
-  else{
+  else {
     output <- c(4 - input[2] + abs(input[1] - input[2]), 4 - input[1] + abs(input[1] - input[2]), 1)
   }
   output
@@ -90,6 +93,27 @@ transform <- function(input){
 
 # iteratively apply transformation function to list of SVs
 support_vectors <- lapply(support_vectors, transform)
+support_vectors
+
+# lets look at higher dimensional transformation
+x1 <- c(1,4)
+x2 <- c(5,6)
+x3 <- c(4,1)
+x4 <- c(9,3)
+x5 <- c(3,7)
+x6 <- c(8,8)
+x7 <- c(9,1)
+x8 <- c(3,5)
+x9 <- c(1,7)
+x10 <- c(7,7)
+sv1 <- list(x1, x2, x3, x4, x5, x6, x7, x8, x9, x10)
+sv1
+sv2 <- lapply(sv1, transform)
+sv2
+sv3 <- as.data.frame(matrix(unlist(sv2), nrow = length(sv2), byrow = TRUE))
+sv3
+library(scatterplot3d)
+with(sv3, {scatterplot3d(V1, V2, V3)})
 
 # step 3: generate feature matrix with nested loop
 n <- length(support_vectors)
