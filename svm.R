@@ -1,4 +1,5 @@
 # OCR with support vector machines
+# created on 8/30/14
 # SVMs can be used for classification/numeric prediction
 
 setwd("~/Dropbox/Development/packt/chapter 7")
